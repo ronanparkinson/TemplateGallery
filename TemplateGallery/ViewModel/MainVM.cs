@@ -65,6 +65,7 @@ namespace TemplateGallery.ViewModel
             if (template != null)
             {
                 template.IsFavorite = !template.IsFavorite;
+                OnPropertyChanged(nameof(Templates));
             }
         }
 
