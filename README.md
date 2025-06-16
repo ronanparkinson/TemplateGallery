@@ -47,9 +47,6 @@ Service: TemplateService.cs (stubbed service to simulate fetching template data)
 
 Converters: BoolToStarConverter (toggles star icon in the UI)
 
-🔄 Future Enhancements
-🌐 Integration with a real REST API for templates
-
 🗂️ Grouping/filtering by tags or categories
 
 🔍 Search functionality
@@ -76,3 +73,8 @@ Clean MVVM separation
 Passion and hands-on effort beyond CV checkboxes
 
 A solid foundation for modern .NET desktop applications
+
+
+
+🔄 Future Enhancements
+🌐 Integration with a real REST API for templates
