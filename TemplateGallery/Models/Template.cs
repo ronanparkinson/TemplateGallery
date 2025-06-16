@@ -26,7 +26,7 @@ namespace TemplateGallery.Models
                 if (_isFavorite != value)
                 {
                     _isFavorite = value;
-                    OnPropertyChanged(); // ← THIS is what triggers the UI update
+                    OnPropertyChanged(); 
                 }
             }
         }

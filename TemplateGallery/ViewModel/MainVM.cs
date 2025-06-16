@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -28,11 +30,10 @@ namespace TemplateGallery.ViewModel
         private async void LoadTemplate()
         {
             var results = await _templateService.GetTemplatesAsync();
-            //foreach (var template in results)
-            //{
-            //    Templates.Add(template);
-            //}
+
             Templates.Clear();
+
+            var favoriteIds = LoadFavorites(); // Load saved favorites 
 
             var tasks = results.Select(async template =>
             {
@@ -48,6 +49,7 @@ namespace TemplateGallery.ViewModel
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
+                        template.IsFavorite = favoriteIds.Contains(template.Title);
                         template.Image = image;
                         Templates.Add(template);
                     }, System.Windows.Threading.DispatcherPriority.Background);
@@ -65,7 +67,9 @@ namespace TemplateGallery.ViewModel
             if (template != null)
             {
                 template.IsFavorite = !template.IsFavorite;
-                System.Diagnostics.Debug.WriteLine($"Favorite toggled for: {template.Title} → {template.IsFavorite}");
+                SaveFavorites(); // ← save after change
+
+                //System.Diagnostics.Debug.WriteLine($"Favorite toggled for: {template.Title} → {template.IsFavorite}");
                 // OnPropertyChanged(nameof(Templates));
             }
         }
@@ -74,6 +78,42 @@ namespace TemplateGallery.ViewModel
 
         private void OnPropertyChanged([CallerMemberName] string name = null) { 
             PropertyChanged.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        private void SaveFavorites()
+        {
+            try
+            {
+                var favoriteIds = Templates
+                    .Where(t => t.IsFavorite)
+                    .Select(t => t.Title) // or a unique ID if you add one
+                    .ToList();
+
+                var json = JsonSerializer.Serialize(favoriteIds);
+                File.WriteAllText("favorites.json", json);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to save favorites: {ex.Message}");
+            }
+        }
+
+        private List<string> LoadFavorites()
+        {
+            try
+            {
+                if (File.Exists("favorites.json"))
+                {
+                    var json = File.ReadAllText("favorites.json");
+                    return JsonSerializer.Deserialize<List<string>>(json) ?? new List<string>();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to load favorites: {ex.Message}");
+            }
+
+            return new List<string>();
         }
     }
 }
