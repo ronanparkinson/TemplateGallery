@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using TemplateGallery.Models;
 using TemplateGallery.Services;
@@ -16,10 +17,11 @@ namespace TemplateGallery.ViewModel
     public class MainVM : INotifyPropertyChanged
     {
         private readonly TemplateService _templateService = new();
-
         public ObservableCollection<Template> Templates { get; set; } = new ();
+        public ICommand FavouriteCommand { get; }
 
-        public MainVM() { 
+        public MainVM() {
+            FavouriteCommand = new RelayCommand<Template>(ToggleFavorite);
             LoadTemplate();
         }
 
@@ -48,7 +50,7 @@ namespace TemplateGallery.ViewModel
                     {
                         template.Image = image;
                         Templates.Add(template);
-                    });
+                    }, System.Windows.Threading.DispatcherPriority.Background);
                 }
                 catch (Exception ex)
                 {
@@ -56,6 +58,14 @@ namespace TemplateGallery.ViewModel
                 }
             });
             await Task.WhenAll(tasks);
+        }
+
+        private void ToggleFavorite(Template template)
+        {
+            if (template != null)
+            {
+                template.IsFavorite = !template.IsFavorite;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
