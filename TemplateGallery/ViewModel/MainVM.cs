@@ -65,7 +65,8 @@ namespace TemplateGallery.ViewModel
             if (template != null)
             {
                 template.IsFavorite = !template.IsFavorite;
-                OnPropertyChanged(nameof(Templates));
+                System.Diagnostics.Debug.WriteLine($"Favorite toggled for: {template.Title} → {template.IsFavorite}");
+                // OnPropertyChanged(nameof(Templates));
             }
         }
 
