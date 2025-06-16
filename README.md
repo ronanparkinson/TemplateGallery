@@ -19,7 +19,8 @@ This is a sample desktop application built using .NET 8 WPF with the MVVM patter
 🛠️ Designed for future extension with real APIs
 
 📷 Demo
-Screenshot
+![image](https://github.com/user-attachments/assets/9ec724b5-fed4-4e88-9d42-dd9019048c54)
+
 
 🧠 Technologies Used
 C# .NET 8
