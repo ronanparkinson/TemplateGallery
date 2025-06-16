@@ -1,3 +1,7 @@
+A focused, weekend-built project designed to demonstrate practical WPF, MVVM, and async capabilities.
+Developed alongside a full-time engineering role and part-time AI master's.
+
+
 🖼️ Template Gallery (WPF, MVVM)
 This is a sample desktop application built using .NET 8 WPF with the MVVM pattern. It simulates a basic UI for browsing presentation templates with the ability to mark favorites, which are persisted to disk.
 
