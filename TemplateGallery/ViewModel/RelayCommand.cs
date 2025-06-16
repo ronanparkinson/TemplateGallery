@@ -21,7 +21,7 @@ namespace TemplateGallery.ViewModel
 
         public bool CanExecute(object? parameter)
         {
-            return _CanExecute != null || _CanExecute((T)parameter); 
+            return _CanExecute == null || _CanExecute((T)parameter); 
         }
 
         public void Execute(object? parameter)
